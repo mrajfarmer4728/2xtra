@@ -501,30 +501,24 @@ const Components = {
     `;
   },
 
-  // 3 Compact Quick Action Items (Icon on Top, Small Text Below)
+  // 3 Compact Quick Action Items (Icon on Top, Small Text Below - No Circle Ring)
   renderStoryChips(state) {
     return `
       <div class="story-actions-bar">
-        <div class="story-action-item" onclick="App.showToast('${this.t('chip1Sub', state)}')">
-          <div class="story-bubble c-blue">
-            <span class="story-bubble-icon">🎟️</span>
-          </div>
+        <div class="story-action-item" onclick="App.scrollToSeatMatrix()" title="${this.t('chip1Title', state)}">
+          <span class="story-standalone-icon">🎟️</span>
           <span class="story-item-title">${this.t('chip1Title', state)}</span>
           <span class="story-item-sub">${this.t('chip1Sub', state)}</span>
         </div>
 
-        <div class="story-action-item" onclick="App.showToast('${this.t('chip2Sub', state)}')">
-          <div class="story-bubble c-gold">
-            <span class="story-bubble-icon">🏆</span>
-          </div>
+        <div class="story-action-item" onclick="App.navigateTo('draw')" title="${this.t('chip2Title', state)}">
+          <span class="story-standalone-icon">🏆</span>
           <span class="story-item-title">${this.t('chip2Title', state)}</span>
           <span class="story-item-sub">${this.t('chip2Sub', state)}</span>
         </div>
 
-        <div class="story-action-item" onclick="App.showToast('${this.t('chip3Sub', state)}')">
-          <div class="story-bubble c-green">
-            <span class="story-bubble-icon">🔄</span>
-          </div>
+        <div class="story-action-item" onclick="App.showRolloverGuide()" title="${this.t('chip3Title', state)}">
+          <span class="story-standalone-icon">🔄</span>
           <span class="story-item-title">${this.t('chip3Title', state)}</span>
           <span class="story-item-sub">${this.t('chip3Sub', state)}</span>
         </div>

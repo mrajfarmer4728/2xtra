@@ -244,6 +244,32 @@ const App = {
     State.setOngoingFilter(filter);
   },
 
+  scrollToSeatMatrix() {
+    this.playClick();
+    if (State.activeTab !== 'pools') {
+      State.setTab('pools');
+    }
+    State.setPoolViewTab('available');
+    setTimeout(() => {
+      const el = document.getElementById('seatMatrixGrid') || document.querySelector('.seat-matrix-wrapper') || document.getElementById('poolDynamicContainer');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const isEn = State.language === 'en';
+        this.showToast(isEn ? '🎟️ Select an available seat to join the pool!' : '🎟️ पूल में शामिल होने के लिए खाली सीट चुनें!');
+      }
+    }, 50);
+  },
+
+  showRolloverGuide() {
+    this.playClick();
+    const isEn = State.language === 'en';
+    this.showToast(isEn 
+      ? '🔄 <strong>100% Free Rollover:</strong> If your ticket is not drawn in this round, you automatically advance to the next round with 0 extra fees until you win!' 
+      : '🔄 <strong>100% मुफ्त अगला राउंड:</strong> यदि आपका टिकट इस ड्रॉ में नहीं निकलता, तो आप बिना कोई नया पैसा दिए अगले राउंड में स्वतः शामिल होंगे जब तक आप न जीतें!',
+      5000
+    );
+  },
+
   navigateTo(tab) {
     this.playClick();
     State.setTab(tab);

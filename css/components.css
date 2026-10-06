@@ -1371,13 +1371,20 @@
 /* ==========================================================================
    STORY ACTIONS BAR: ICON ON TOP, SMALL TEXT BELOW (FIGMA COMPACT DOCK)
    ========================================================================== */
+/* ==========================================================================
+   STORY ACTIONS BAR: CLEAN MODERN QUICK ACTIONS (NO CIRCLE RINGS)
+   ========================================================================== */
 .story-actions-bar {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: clamp(4px, 1.8vw, 12px);
   margin-bottom: 14px;
-  padding: 4px 6px;
+  padding: 10px clamp(6px, 2vw, 12px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .story-action-item {
@@ -1387,116 +1394,96 @@
   text-align: center;
   cursor: pointer;
   flex: 1;
-  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 4px clamp(2px, 1vw, 6px);
+  border-radius: var(--radius-sm);
+  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.18s ease;
+  user-select: none;
+}
+
+.story-action-item:hover {
+  background: rgba(0, 122, 255, 0.05);
 }
 
 .story-action-item:active {
   transform: scale(0.94);
 }
 
-.story-bubble {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 6px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  border: 1.5px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.story-bubble-icon {
-  font-size: 22px;
+.story-standalone-icon {
+  font-size: clamp(24px, 6vw, 30px);
   line-height: 1;
+  margin-bottom: 5px;
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.story-bubble.c-blue {
-  background: linear-gradient(135deg, rgba(0, 122, 255, 0.1) 0%, rgba(0, 122, 255, 0.2) 100%);
-  border-color: rgba(0, 122, 255, 0.28);
-}
-
-.story-bubble.c-gold {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.22) 100%);
-  border-color: rgba(245, 158, 11, 0.32);
-}
-
-.story-bubble.c-green {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.2) 100%);
-  border-color: rgba(16, 185, 129, 0.28);
-}
-
-[data-theme="dark"] .story-bubble.c-blue {
-  background: rgba(0, 122, 255, 0.2);
-  border-color: rgba(0, 122, 255, 0.45);
-}
-
-[data-theme="dark"] .story-bubble.c-gold {
-  background: rgba(245, 158, 11, 0.2);
-  border-color: rgba(245, 158, 11, 0.45);
-}
-
-[data-theme="dark"] .story-bubble.c-green {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: rgba(16, 185, 129, 0.45);
+.story-action-item:hover .story-standalone-icon {
+  transform: translateY(-2px) scale(1.12);
 }
 
 .story-item-title {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: clamp(10px, 2.7vw, 12px);
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.25;
   margin-bottom: 2px;
+  white-space: nowrap;
 }
 
 .story-item-sub {
-  font-size: 10px;
+  font-size: clamp(8.5px, 2.3vw, 10.5px);
   color: var(--text-secondary);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 /* ==========================================================================
-   POOL PRICE TIER SELECTOR (1 USDT, 5 USDT, 10 USDT)
+   POOL PRICE TIER SELECTOR (FLUID 1-ROW RESPONSIVE: NEVER WRAPS OR DROPS)
    ========================================================================== */
 .pool-price-selector-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding-bottom: 14px;
+  gap: clamp(6px, 1.8vw, 12px);
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+  margin-bottom: 12px;
+  flex-wrap: nowrap !important;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .price-selector-heading {
   display: flex;
   flex-direction: column;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .price-selector-title {
-  font-size: 11px;
+  font-size: clamp(8.5px, 2.4vw, 11px);
   font-weight: 700;
   color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
 .price-selector-sub {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: clamp(11px, 3.2vw, 13.5px);
+  font-weight: 800;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .price-tier-pills {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-pill);
-  padding: 3.5px;
-  gap: 3px;
+  padding: clamp(2px, 0.7vw, 3.5px);
+  gap: clamp(2px, 0.7vw, 3px);
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -1508,7 +1495,7 @@
 .tier-pill-btn {
   border: none;
   background: transparent;
-  padding: 5px 14px;
+  padding: clamp(3px, 1vw, 5px) clamp(6px, 1.8vw, 14px);
   border-radius: var(--radius-pill);
   display: inline-flex;
   flex-direction: column;
@@ -1517,7 +1504,7 @@
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  min-width: 74px;
+  min-width: clamp(52px, 15vw, 76px);
   position: relative;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -1529,16 +1516,16 @@
 
 .tier-pill-btn.active {
   background: var(--bg-card);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] .tier-pill-btn.active {
   background: rgba(255, 255, 255, 0.16);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 .tier-pill-btn.tier-pill-soon {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .tier-pill-btn.tier-pill-soon:hover {
@@ -1547,18 +1534,43 @@
 
 .soon-badge {
   position: absolute;
-  top: -5px;
-  right: -3px;
+  top: -4px;
+  right: -2px;
   background: linear-gradient(135deg, #f59e0b, #d97706);
   color: #ffffff;
-  font-size: 7.5px;
+  font-size: clamp(6.5px, 1.8vw, 7.5px);
   font-weight: 800;
-  padding: 1px 4.5px;
+  padding: 1px clamp(3px, 1vw, 4.5px);
   border-radius: 6px;
   letter-spacing: 0.3px;
   box-shadow: 0 2px 4px rgba(245, 158, 11, 0.35);
   pointer-events: none;
   line-height: 1.1;
+}
+
+.tier-amount {
+  font-size: clamp(10.5px, 3vw, 13px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+}
+
+.tier-pill-btn.active .tier-amount {
+  color: #007aff;
+}
+
+[data-theme="dark"] .tier-pill-btn.active .tier-amount {
+  color: #38bdf8;
+}
+
+.tier-name {
+  font-size: clamp(7.5px, 2vw, 9px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  opacity: 0.75;
+  white-space: nowrap;
 }
 
 /* Smooth Slide Animation for Tier Switching */
