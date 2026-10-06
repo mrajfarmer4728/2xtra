@@ -61,8 +61,8 @@ const I18N = {
     btnFull: "Pool Full (Starting at 8 PM)",
 
     // Pool Tier & Ongoing Status System
-    tabAvailable: "Available Seats",
-    tabOngoing: "Ongoing Pool Status",
+    tabAvailable: "Available",
+    tabOngoing: "Ongoing Pool",
     lblStartDate: "Game Start Date",
     lblSeatsLeft: "Seats Available",
     lblPriceTier: "Ticket Price",
@@ -256,8 +256,8 @@ const I18N = {
     btnFull: "पूल भर गया है (ड्रॉ शीघ्र)",
 
     // Pool Tier & Ongoing Status System
-    tabAvailable: "उपलब्ध सीटें",
-    tabOngoing: "चल रही लॉटरी की स्थिति",
+    tabAvailable: "उपलब्ध",
+    tabOngoing: "चल रहा पूल",
     lblStartDate: "खेल शुरू होने की तारीख",
     lblSeatsLeft: "उपलब्ध सीटें",
     lblPriceTier: "टिकट मूल्य",
@@ -743,11 +743,11 @@ const Components = {
           <!-- 3. Dual Mode Segmented Control: [Available Seats] vs [Ongoing Lottery Status] -->
           <div class="pool-mode-segmented">
             <button class="mode-seg-btn ${currentTab === 'available' ? 'active' : ''}" onclick="App.setPoolViewTab('available')">
-              <span>🎟️ ${this.t('tabAvailable', state)}</span>
+              <span class="mode-btn-text">🎟️ ${this.t('tabAvailable', state)}</span>
               <span class="seg-count-badge">${availableSeats} Left</span>
             </button>
             <button class="mode-seg-btn ${currentTab === 'ongoing' ? 'active' : ''}" onclick="App.setPoolViewTab('ongoing')">
-              <span>🔴 ${this.t('tabOngoing', state)}</span>
+              <span class="mode-btn-text">🔴 ${this.t('tabOngoing', state)}</span>
               <span class="seg-count-badge live">${activeRemaining} Active</span>
             </button>
           </div>
