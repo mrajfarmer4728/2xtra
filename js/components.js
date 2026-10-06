@@ -1725,8 +1725,8 @@ const Components = {
     const isEn = (state && state.language) === 'en';
     return `
       <!-- Movie Ticket Style Seat Booking Modal -->
-      <div class="ios-modal-backdrop" id="modal-seat-booking" onclick="App.handleBackdropClick(event, 'seat-booking')">
-        <div class="ios-bottom-sheet seat-booking-sheet">
+      <div class="ios-modal-backdrop ${state.isSeatBookingOpen ? 'open' : ''}" id="modal-seat-booking" onclick="App.handleBackdropClick(event, 'seat-booking')">
+        <div class="ios-bottom-sheet seat-booking-sheet" onclick="event.stopPropagation()">
           <div class="sheet-handle"></div>
           <div class="sheet-header">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -1735,7 +1735,7 @@ const Components = {
                 ${isEn ? 'Seat Booking Details' : 'टिकट बुकिंग विवरण'}
               </h3>
             </div>
-            <button class="sheet-close-btn" onclick="App.closeModal('seat-booking')" title="Close">✕</button>
+            <button type="button" class="sheet-close-btn" onclick="App.closeModal('seat-booking')" title="Close">✕</button>
           </div>
 
           <div id="seatBookingBody">

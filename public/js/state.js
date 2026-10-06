@@ -146,6 +146,7 @@ const State = {
   theme: 'light',
   selectedBookingSeats: [14],
   selectedBookingPoolId: "pool_5",
+  isSeatBookingOpen: false,
 
   setSelectedBookingSeats(seats) {
     this.selectedBookingSeats = Array.isArray(seats) ? seats : [seats];
@@ -156,7 +157,6 @@ const State = {
     const num = Number(seatNum);
     if (!this.selectedBookingSeats.includes(num)) {
       this.selectedBookingSeats.push(num);
-      this.notify();
     }
   },
 
@@ -164,7 +164,6 @@ const State = {
     const num = Number(seatNum);
     if (this.selectedBookingSeats.length > 1) {
       this.selectedBookingSeats = this.selectedBookingSeats.filter(s => s !== num);
-      this.notify();
     }
   },
 

@@ -136,7 +136,9 @@ def init_db():
         """, (
             "pool_1", "Starter Pool #01 (1 USDT)", "60-Seat 1 USDT Starter Pool", 1.0, 60, "Daily", 2, 1, "ACTIVE", cfg_1, datetime.now(timezone.utc).isoformat()
         ))
-        for i in range(1, 51):
+        open_1 = {6, 10, 15, 21, 27, 33, 39, 44, 48, 55}
+        booked_1 = [s for s in range(1, 61) if s not in open_1]
+        for i in booked_1:
             is_won = (i in [4, 18])
             uid = f"user_1_{i:03d}"
             c.execute("INSERT OR IGNORE INTO users (id, name, phone, email, password_hash, wallet_balance, role, kyc_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -159,7 +161,9 @@ def init_db():
             "pool_5", "VIP Pro Pool #01 (5 USDT)", "Exclusive 60-member 5 USDT pool.",
             5.0, 60, "Daily", 2, 1, "ACTIVE", cfg_5, datetime.now(timezone.utc).isoformat()
         ))
-        for i in range(1, 46):
+        open_5 = {3, 7, 11, 14, 19, 23, 26, 31, 35, 38, 42, 45, 49, 52, 56, 59}
+        booked_5 = [s for s in range(1, 61) if s not in open_5]
+        for i in booked_5:
             is_won = (i in [5, 12])
             uid = f"user_5_{i:03d}"
             c.execute("INSERT OR IGNORE INTO users (id, name, phone, email, password_hash, wallet_balance, role, kyc_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -177,7 +181,9 @@ def init_db():
         """, (
             "pool_10", "Mega VIP Pool #01 (10 USDT)", "60-Seat 10 USDT Mega Pool", 10.0, 60, "Daily", 2, 1, "ACTIVE", cfg_10, datetime.now(timezone.utc).isoformat()
         ))
-        for i in range(1, 49):
+        open_10 = {4, 8, 13, 19, 24, 30, 36, 41, 46, 51, 54, 58}
+        booked_10 = [s for s in range(1, 61) if s not in open_10]
+        for i in booked_10:
             is_won = (i in [2, 20])
             uid = f"user_10_{i:03d}"
             c.execute("INSERT OR IGNORE INTO users (id, name, phone, email, password_hash, wallet_balance, role, kyc_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",

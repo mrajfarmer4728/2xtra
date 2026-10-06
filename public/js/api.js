@@ -77,50 +77,66 @@ const MockDB = {
 
     const tickets = [];
 
-    // Seed tickets for pool_5: 45 sold (15 available). In ongoing view: 43 Active, 2 Won & Exited.
-    for (let i = 1; i <= 45; i++) {
-      const isWon = (i === 5 || i === 12);
+    // Helper to generate scattered booked seats
+    const getScatteredSeats = (openArr) => {
+      const openSet = new Set(openArr);
+      const res = [];
+      for (let s = 1; s <= 60; s++) {
+        if (!openSet.has(s)) res.push(s);
+      }
+      return res;
+    };
+
+    // Seed tickets for pool_5: 44 sold scattered (16 available).
+    const open5 = [3, 7, 11, 14, 19, 23, 26, 31, 35, 38, 42, 45, 49, 52, 56, 59];
+    const booked5 = getScatteredSeats(open5);
+    booked5.forEach((seatNum, idx) => {
+      const isWon = (seatNum === 5 || seatNum === 12);
       tickets.push({
-        id: `tkt_5_${i}`,
+        id: `tkt_5_${seatNum}`,
         pool_id: pool5.id,
-        user_id: `demo_user_${i}`,
-        ticket_number: i,
-        name: demoNames[i - 1] || `Player #${i}`,
+        user_id: `demo_user_${seatNum}`,
+        ticket_number: seatNum,
+        name: demoNames[idx % demoNames.length] || `Player #${seatNum}`,
         status: isWon ? "WON" : "ACTIVE",
         won_round: isWon ? 1 : null,
         prize_info: isWon ? "125 USDT Cash" : null
       });
-    }
+    });
 
-    // Seed tickets for pool_1: 50 sold (10 available). In ongoing view: 48 Active, 2 Won & Exited.
-    for (let i = 1; i <= 50; i++) {
-      const isWon = (i === 4 || i === 18);
+    // Seed tickets for pool_1: 48 sold scattered (12 available).
+    const open1 = [6, 10, 15, 21, 27, 33, 39, 44, 48, 51, 55, 60];
+    const booked1 = getScatteredSeats(open1);
+    booked1.forEach((seatNum, idx) => {
+      const isWon = (seatNum === 4 || seatNum === 18);
       tickets.push({
-        id: `tkt_1_${i}`,
+        id: `tkt_1_${seatNum}`,
         pool_id: pool1.id,
-        user_id: `demo_user_1_${i}`,
-        ticket_number: i,
-        name: demoNames[(i + 5) % demoNames.length] || `Player #${i}`,
+        user_id: `demo_user_1_${seatNum}`,
+        ticket_number: seatNum,
+        name: demoNames[(idx + 5) % demoNames.length] || `Player #${seatNum}`,
         status: isWon ? "WON" : "ACTIVE",
         won_round: isWon ? 1 : null,
         prize_info: isWon ? "25 USDT Cash" : null
       });
-    }
+    });
 
-    // Seed tickets for pool_10: 48 sold (12 available). In ongoing view: 46 Active, 2 Won & Exited.
-    for (let i = 1; i <= 48; i++) {
-      const isWon = (i === 2 || i === 20);
+    // Seed tickets for pool_10: 42 sold scattered (18 available).
+    const open10 = [2, 6, 9, 13, 17, 21, 25, 28, 32, 36, 40, 43, 47, 50, 53, 57, 58, 60];
+    const booked10 = getScatteredSeats(open10);
+    booked10.forEach((seatNum, idx) => {
+      const isWon = (seatNum === 2 || seatNum === 20);
       tickets.push({
-        id: `tkt_10_${i}`,
+        id: `tkt_10_${seatNum}`,
         pool_id: pool10.id,
-        user_id: `demo_user_10_${i}`,
-        ticket_number: i,
-        name: demoNames[(i + 10) % demoNames.length] || `Player #${i}`,
+        user_id: `demo_user_10_${seatNum}`,
+        ticket_number: seatNum,
+        name: demoNames[(idx + 10) % demoNames.length] || `Player #${seatNum}`,
         status: isWon ? "WON" : "ACTIVE",
         won_round: isWon ? 1 : null,
         prize_info: isWon ? "250 USDT Cash" : null
       });
-    }
+    });
 
     return {
       pools: [pool1, pool5, pool10],

@@ -348,6 +348,10 @@ const App = {
       this.navigateToAuth('login');
       return;
     }
+    if (name === 'seat-booking') {
+      this.openSeatBookingModal();
+      return;
+    }
     this.playClick();
     const modal = document.getElementById(`modal-${name}`);
     if (modal) modal.classList.add('open');
@@ -355,6 +359,12 @@ const App = {
 
   closeModal(name) {
     this.playClick();
+    if (name === 'seat-booking') {
+      State.isSeatBookingOpen = false;
+      const modal = document.getElementById('modal-seat-booking');
+      if (modal) modal.classList.remove('open');
+      return;
+    }
     const modal = document.getElementById(`modal-${name}`);
     if (modal) modal.classList.remove('open');
   },
@@ -387,9 +397,18 @@ const App = {
         }
       }
     }
-    State.setSelectedBookingSeats(initialSeat ? [initialSeat] : [14]);
-    this.openModal('seat-booking');
-    this.updateBookingModalBody();
+    State.selectedBookingSeats = initialSeat ? [Number(initialSeat)] : [3];
+    State.isSeatBookingOpen = true;
+
+    const modal = document.getElementById('modal-seat-booking');
+    if (modal) {
+      this.updateBookingModalBody();
+      modal.classList.add('open');
+    } else {
+      this.render();
+      const m = document.getElementById('modal-seat-booking');
+      if (m) m.classList.add('open');
+    }
   },
 
   handleBookedSeatClick(seatNum, isMine) {
@@ -418,8 +437,7 @@ const App = {
     this.playClick();
     const select = document.getElementById('seatSelectDropdown');
     if (select && select.value) {
-      State.addBookingSeat(Number(select.value));
-      this.updateBookingModalBody();
+      this.addBookingSeat(Number(select.value));
     }
   },
 

@@ -938,6 +938,10 @@
   pointer-events: auto;
 }
 
+.ios-modal-backdrop.open .ios-bottom-sheet {
+  transform: translateY(0) !important;
+}
+
 .ios-bottom-sheet {
   background: var(--bg-surface);
   border-top: 1px solid var(--border-glass);
