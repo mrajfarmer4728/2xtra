@@ -1,0 +1,638 @@
+/* ==========================================================================
+   APPLE iOS HUMAN INTERFACE DESIGN SYSTEM (LIGHT MODE DEFAULT)
+   ========================================================================== */
+
+:root {
+  /* LIGHT MODE (DEFAULT) - Clean Apple iOS Aesthetics */
+  --bg-main: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f8fafc;
+  --bg-glass: rgba(255, 255, 255, 0.92);
+  --border-glass: #e2e8f0;
+  --border-subtle: #edf2f7;
+  --border-accent: rgba(0, 122, 255, 0.25);
+  --border-gold: rgba(217, 119, 6, 0.35);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
+
+  --accent-blue: #007aff;
+  --accent-cyan: #0284c7;
+  --accent-gold: #b45309;
+  --accent-gold-soft: #d97706;
+  --accent-green: #059669;
+  --accent-red: #ef4444;
+
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-pill: 9999px;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
+  --transition-fast: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* DARK MODE OVERRIDES (When user toggles from Profile) */
+[data-theme="dark"] {
+  --bg-main: #07090e;
+  --bg-surface: #0d121d;
+  --bg-card: #131926;
+  --bg-card-subtle: #192233;
+  --bg-glass: rgba(14, 19, 31, 0.92);
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(0, 168, 255, 0.35);
+  --border-gold: rgba(245, 158, 11, 0.4);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+
+  --accent-blue: #38bdf8;
+  --accent-cyan: #38bdf8;
+  --accent-gold: #f59e0b;
+  --accent-gold-soft: #fbbf24;
+  --accent-green: #10b981;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  line-height: 1.45;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* App Shell Container - Native iPhone Frame */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg-surface);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.06);
+  border-left: 1px solid var(--border-glass);
+  border-right: 1px solid var(--border-glass);
+}
+
+@media (max-width: 500px) {
+  .app-container {
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   TELEGRAM iOS NATIVE APP SHELL & FLUID DOCK
+   ========================================================================== */
+
+/* Header - Native iOS Nav Bar */
+.ios-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 54px;
+  gap: 6px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.brand-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-glass);
+}
+
+.brand-text h1 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  line-height: 1;
+}
+
+.brand-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 900;
+  padding: 2px 5px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+/* User & Wallet Header Pills */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.lang-toggle-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.lang-toggle-btn:hover {
+  background: var(--border-subtle);
+}
+
+/* Ultra-Compact Top Balance Pill */
+.wallet-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 136, 204, 0.08);
+  border: 1px solid rgba(0, 136, 204, 0.25);
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.wallet-badge-pill:hover {
+  background: rgba(0, 136, 204, 0.15);
+}
+
+.wallet-badge-pill .coin-icon {
+  font-size: 11px;
+}
+
+.wallet-balance-num {
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--accent-blue);
+  letter-spacing: -0.2px;
+}
+
+/* Telegram Native Bottom Navigation Bar (Dock) */
+.ios-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 1000;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--border-glass);
+  border-left: 1px solid var(--border-glass);
+  border-right: 1px solid var(--border-glass);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 8px;
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (max-width: 500px) {
+  .ios-bottom-nav {
+    left: 0;
+    transform: none;
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 5px 2px;
+  border-radius: var(--radius-sm);
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: inherit;
+  user-select: none;
+  position: relative;
+}
+
+.bottom-nav-icon {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bottom-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  transition: color 0.2s;
+}
+
+.bottom-nav-item.active {
+  color: var(--accent-blue);
+}
+
+.bottom-nav-item.active .bottom-nav-icon {
+  transform: translateY(-2px) scale(1.12);
+}
+
+.bottom-nav-item.active .bottom-nav-label {
+  color: var(--accent-blue);
+  font-weight: 800;
+}
+
+.bottom-nav-item.admin-nav.active {
+  color: var(--accent-gold);
+}
+
+.bottom-nav-item.admin-nav.active .bottom-nav-label {
+  color: var(--accent-gold);
+}
+
+/* Subtle dot on active tab */
+.bottom-nav-item.active::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-blue);
+  border-radius: 50%;
+}
+
+.bottom-nav-item.admin-nav.active::after {
+  background: var(--accent-gold);
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 14px 14px 85px 14px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   TELEGRAM NATIVE APP COMPACT STORY CHIPS & AUDIO WAVE PILL
+   ========================================================================== */
+
+/* Compact Voice Audio Pill - Light Mode Crisp */
+.voice-audio-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.voice-audio-pill:hover {
+  border-color: var(--border-accent);
+}
+
+.voice-audio-pill:active {
+  transform: scale(0.98);
+}
+
+.voice-pill-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voice-pill-icon {
+  font-size: 15px;
+}
+
+.voice-pill-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.voice-pill-sub {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+/* Sound Wave Bars Animation */
+.sound-wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+
+.wave-bar {
+  width: 2.5px;
+  height: 6px;
+  background: var(--accent-green);
+  border-radius: 2px;
+}
+
+.sound-wave-bars.active .wave-bar:nth-child(1) { animation: wave 0.8s infinite ease-in-out; }
+.sound-wave-bars.active .wave-bar:nth-child(2) { animation: wave 0.6s infinite ease-in-out 0.2s; }
+.sound-wave-bars.active .wave-bar:nth-child(3) { animation: wave 0.9s infinite ease-in-out 0.4s; }
+.sound-wave-bars.active .wave-bar:nth-child(4) { animation: wave 0.7s infinite ease-in-out 0.1s; }
+
+@keyframes wave {
+  0%, 100% { height: 3px; }
+  50% { height: 14px; }
+}
+
+/* Horizontal Story Chips (Like Telegram Highlights) - Crisp Light Mode */
+.story-chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 14px;
+  padding: 1px 0;
+}
+
+.story-chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.story-chip {
+  flex: 1;
+  min-width: 125px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.18s ease;
+}
+
+.story-chip:active {
+  transform: scale(0.97);
+}
+
+.story-chip-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.story-chip.c-blue .story-chip-icon {
+  background: rgba(0, 136, 204, 0.1);
+  color: var(--accent-blue);
+}
+
+.story-chip.c-gold .story-chip-icon {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--accent-gold);
+}
+
+.story-chip.c-green .story-chip-icon {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--accent-green);
+}
+
+.story-chip-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.story-chip-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.story-chip-sub {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+/* Floating WhatsApp Pill - Mobile App Style */
+.floating-whatsapp-btn {
+  position: fixed;
+  bottom: 74px; /* Above bottom nav */
+  right: 14px;
+  z-index: 998;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  font-size: 11px;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  cursor: pointer;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.floating-whatsapp-btn:hover {
+  transform: scale(1.05);
+}
+
+/* iOS Settings Card & Appearance Controls (In Profile Hub) */
+.ios-settings-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 4px 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.ios-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  gap: 12px;
+}
+
+.ios-settings-row:not(:last-child) {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ios-settings-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ios-settings-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--accent-blue);
+  flex-shrink: 0;
+}
+
+.ios-settings-icon.gold {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--accent-gold);
+}
+
+.ios-settings-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.ios-settings-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.ios-segmented-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 3px;
+}
+
+[data-theme="dark"] .ios-segmented-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.ios-toggle-btn,
+.seg-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+  line-height: 1.2;
+}
+
+.ios-toggle-btn:hover,
+.seg-btn:hover {
+  color: var(--text-primary);
+}
+
+.ios-toggle-btn.active,
+.seg-btn.active {
+  background: var(--bg-card);
+  color: var(--accent-blue);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+  font-weight: 800;
+}
+
+[data-theme="dark"] .ios-toggle-btn.active,
+[data-theme="dark"] .seg-btn.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+
+

@@ -1,0 +1,85 @@
+/* ==========================================================================
+   TELEGRAM 60 FPS ULTRA-SMOOTH ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+@keyframes pulse-spin {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes tumbler-spin {
+  0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4)); }
+  25% { transform: rotate(180deg) scale(1.15); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)); }
+  50% { transform: rotate(360deg) scale(0.95); }
+  75% { transform: rotate(540deg) scale(1.15); filter: drop-shadow(0 0 30px rgba(0, 225, 255, 0.8)); }
+  100% { transform: rotate(720deg) scale(1); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)); }
+}
+
+@keyframes toast-in {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes winner-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); border-color: rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 35px rgba(255, 215, 0, 0.7); border-color: #ffd700; }
+}
+
+@keyframes gold-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float-ball {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.tumbling-active {
+  animation: tumbler-spin 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+}
+
+.floating-ball {
+  animation: float-ball 3.5s ease-in-out infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #ffffff 0%, #ffd700 50%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 3s linear infinite;
+}
+
+/* Telegram Haptic Click Feedback */
+button:active, .seat-node:active, .wallet-badge-pill:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.08s ease !important;
+}
+
+/* Tab Transition Smoothness */
+.tab-pane {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.1, 0.8, 0.2, 1);
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
