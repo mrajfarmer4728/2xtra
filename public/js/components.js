@@ -809,33 +809,26 @@ const Components = {
               <span class="status-badge gold">Pool: ${pool.ticket_price} USDT</span>
             </div>
 
-            <!-- Summary KPI cards -->
+            <!-- Interactive Summary KPI cards (Clickable filter boxes) -->
             <div class="ongoing-kpi-grid">
-              <div class="ongoing-kpi-card active-card">
+              <div class="ongoing-kpi-card active-card ${ongoingFilter === 'ACTIVE' ? 'is-selected' : ''}" 
+                   onclick="App.setOngoingFilter(State.ongoingFilter === 'ACTIVE' ? 'ALL' : 'ACTIVE')" 
+                   role="button" tabindex="0" title="Filter: Active in Draw">
                 <span class="ongoing-kpi-val">${activeRemaining}</span>
                 <span class="ongoing-kpi-lbl">🟢 ${this.t('ongoingActive', state)}</span>
               </div>
-              <div class="ongoing-kpi-card win-card">
+              <div class="ongoing-kpi-card win-card ${ongoingFilter === 'WON' ? 'is-selected' : ''}" 
+                   onclick="App.setOngoingFilter(State.ongoingFilter === 'WON' ? 'ALL' : 'WON')" 
+                   role="button" tabindex="0" title="Filter: Winners">
                 <span class="ongoing-kpi-val">${wonCount}</span>
                 <span class="ongoing-kpi-lbl">🏆 ${this.t('ongoingWin', state)}</span>
               </div>
-              <div class="ongoing-kpi-card total-card">
+              <div class="ongoing-kpi-card total-card ${ongoingFilter === 'ALL' ? 'is-selected' : ''}" 
+                   onclick="App.setOngoingFilter('ALL')" 
+                   role="button" tabindex="0" title="Show All Booked">
                 <span class="ongoing-kpi-val">${totalSold} / ${maxSeats}</span>
                 <span class="ongoing-kpi-lbl">🎟️ Total Booked</span>
               </div>
-            </div>
-
-            <!-- Ongoing Filter Tabs -->
-            <div class="ongoing-filter-bar">
-              <button class="filter-pill-btn ${ongoingFilter === 'ALL' ? 'active' : ''}" onclick="App.setOngoingFilter('ALL')">
-                ${this.t('ongoingAll', state)} (${totalSold})
-              </button>
-              <button class="filter-pill-btn ${ongoingFilter === 'ACTIVE' ? 'active' : ''}" onclick="App.setOngoingFilter('ACTIVE')">
-                🟢 ${this.t('ongoingActive', state)} (${activeRemaining})
-              </button>
-              <button class="filter-pill-btn ${ongoingFilter === 'WON' ? 'active' : ''}" onclick="App.setOngoingFilter('WON')">
-                🏆 ${this.t('ongoingWin', state)} (${wonCount})
-              </button>
             </div>
 
             <!-- Participant Status Roster -->
