@@ -20,6 +20,20 @@
   <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
+  <script>
+    // Strict iOS Safari Auto-Zoom Prevention
+    document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+    document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+  </script>
   <div class="app-container" id="appRoot">
     <!-- Rendered dynamically by JavaScript -->
     <div style="display: flex; height: 100vh; align-items: center; justify-content: center; color: #00a8ff; font-weight: 700;">

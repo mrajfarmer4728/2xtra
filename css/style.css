@@ -77,6 +77,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   font-family: var(--font-family);
   background-color: var(--bg-main);
@@ -88,7 +94,13 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  touch-action: pan-x pan-y;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Fix iPhone Browser Auto-Zoom: Inputs must be >= 16px on iOS to avoid viewport zooming */
+input, select, textarea {
+  font-size: 16px !important;
 }
 
 /* App Shell Container - Native iPhone Frame */

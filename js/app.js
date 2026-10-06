@@ -275,6 +275,8 @@ const App = {
       contentHtml = Components.renderProfileHub(State);
     } else if (State.activeTab === 'admin') {
       contentHtml = Components.renderAdminTab(State);
+    } else if (State.activeTab === 'auth') {
+      contentHtml = Components.renderAuthPage(State, this.authMode);
     }
 
     root.innerHTML = `
@@ -302,7 +304,24 @@ const App = {
     }
   },
 
+  navigateToAuth(mode = 'login') {
+    this.playClick();
+    this.authMode = mode;
+    State.setTab('auth');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+
+  switchAuthPageMode(mode) {
+    this.playClick();
+    this.authMode = mode;
+    this.render();
+  },
+
   openModal(name) {
+    if (name === 'auth') {
+      this.navigateToAuth('login');
+      return;
+    }
     this.playClick();
     const modal = document.getElementById(`modal-${name}`);
     if (modal) modal.classList.add('open');
@@ -315,22 +334,18 @@ const App = {
   },
 
   openRegisterModal() {
-    this.playClick();
-    this.openModal('auth');
-    this.switchAuthMode('register');
+    this.navigateToAuth('register');
   },
 
   openLoginModal() {
-    this.playClick();
-    this.openModal('auth');
-    this.switchAuthMode('login');
+    this.navigateToAuth('login');
   },
 
   handleGuestSeatClick(seatNum) {
     this.playClick();
     const isEn = State.language === 'en';
     this.showToast(isEn ? `🔑 Please sign in to book Seat #${seatNum}!` : `🔑 सीट #${seatNum} बुक करने के लिए कृपया लॉगिन करें!`);
-    this.openModal('auth');
+    this.navigateToAuth('login');
   },
 
   async handleQuickDemoLogin(type = 'demo') {
@@ -344,6 +359,7 @@ const App = {
       const isEn = State.language === 'en';
       this.showToast(isEn ? `👋 Welcome back, ${res.user.name}!` : `👋 नमस्ते ${res.user.name}! आपका स्वागत है।`);
       await this.refreshData();
+      State.setTab('pools');
       this.render();
     } catch (err) {
       this.showToast(`❌ ${err.message}`);
@@ -393,12 +409,16 @@ const App = {
 
     try {
       if (this.authMode === 'register') {
-        const name = document.getElementById('authName').value || (State.language === 'en' ? 'Player' : 'खिलाड़ी');
-        const email = document.getElementById('authEmail').value || `${loginId}@demo.com`;
+        const name = (document.getElementById('authName') && document.getElementById('authName').value) || (State.language === 'en' ? 'Player' : 'खिलाड़ी');
+        const email = (document.getElementById('authEmail') && document.getElementById('authEmail').value) || `${loginId}@demo.com`;
         await API.register(name, loginId, email, password);
         const isEn = State.language === 'en';
         this.showToast(isEn ? '🎉 Account created! Please sign in.' : '🎉 खाता खुल गया! अब लॉगिन करें।');
-        this.switchAuthMode('login');
+        if (State.activeTab === 'auth') {
+          this.switchAuthPageMode('login');
+        } else {
+          this.switchAuthMode('login');
+        }
       } else {
         const res = await API.login(loginId, password);
         State.setUser(res.user);
@@ -406,6 +426,7 @@ const App = {
         const isEn = State.language === 'en';
         this.showToast(isEn ? `👋 Welcome back, ${res.user.name}!` : `👋 नमस्ते ${res.user.name}! आपका स्वागत है।`);
         await this.refreshData();
+        State.setTab('pools');
         this.render();
       }
     } catch (err) {

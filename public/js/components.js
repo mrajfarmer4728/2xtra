@@ -5,26 +5,26 @@ const I18N = {
     langButton: "हिंदी",
     langNext: "hi",
     brandTag: "VIP",
-    brandSub: "60-Seat Daily Knockout Lottery",
+    brandSub: "60-Seat Monthly Knockout Lottery",
     
     // Audio Voice Assistant
     voiceTitle: "Listen: How It Works",
     voiceDesc: "Tap to listen to the rules in clear voice",
     voicePlaying: "Playing audio guide... (Tap to stop)",
-    voiceSpeech: "Welcome to 2XTRA VIP Lottery! Here are the simple rules: First, purchase one ticket for 5 USDT. Second, every day at 8 PM, two lucky winners are drawn to win 125 USDT cash and exit the pool. Third, if you do not win today, your ticket automatically rolls over to tomorrow's draw for free until your ticket wins!",
+    voiceSpeech: "Welcome to 2XTRA VIP Lottery! Here are the simple rules: First, purchase one ticket for 5 USDT. Second, every round, two lucky winners are drawn to win 125 USDT cash and exit the pool. Third, if you do not win today, your ticket automatically rolls over to the next draw for free until your ticket wins!",
     
     // 3 Quick Story Chips
     chip1Title: "1. Buy Ticket",
     chip1Sub: "5 USDT per seat",
-    chip2Title: "2. Daily Winners",
+    chip2Title: "2. Monthly Winners",
     chip2Sub: "2 win & exit",
     chip3Title: "3. Free Rollover",
     chip3Sub: "Play next round free",
 
     // Hero Showcase
     heroTag: "Knockout Pool",
-    heroTitle: "60-User Daily Lottery",
-    heroDesc: "Pay 5 USDT once. Every day, 2 winners claim heavy USDT cash rewards and exit. Remaining participants advance to the next round for free!",
+    heroTitle: "60-User Monthly Lottery",
+    heroDesc: "Pay 5 USDT once. Every month, 2 winners claim heavy USDT cash rewards and exit. Remaining participants advance to the next round for free!",
     statPrize: "Today's Prize",
     statSeats: "Total Seats",
     statWinners: "Winners/Day",
@@ -168,11 +168,11 @@ const I18N = {
     viewerPoolBtn: "🔑 Sign In to Join Pool • ",
     viewerSpectatorBadge: "Spectator View",
     guestWhy1Title: "100% Provably Fair",
-    guestWhy1: "Every round draw uses HMAC SHA-256 cryptographic hashes verifiable by any participant.",
-    guestWhy2Title: "Free Rollover",
-    guestWhy2: "If your ticket is not drawn today, you automatically roll over to tomorrow's draw for 100% free.",
+    guestWhy1: "Cryptographically verifiable draws using HMAC SHA-256.",
+    guestWhy2: "Free Rollover",
+    guestWhy2: "Non-winning tickets roll over automatically at 100% free.",
     guestWhy3Title: "Instant USDT Payouts",
-    guestWhy3: "Winning prizes are credited instantly in USDT (TRC-20 / BEP-20) and can be withdrawn 24/7 directly to your crypto wallet (Binance, Trust Wallet, etc.).",
+    guestWhy3: "24/7 instant crypto withdrawals to Binance or any wallet.",
     userGreetingPrefix: "Welcome back,",
     userActiveSeatsLabel: "Active Seats",
     userAddFundsBtn: "+ Add Funds",
@@ -200,26 +200,26 @@ const I18N = {
     langButton: "English",
     langNext: "en",
     brandTag: "वीआईपी",
-    brandSub: "60 सीटों की दैनिक बचत व लॉटरी",
+    brandSub: "60 सीटों की मासिक बचत व लॉटरी",
 
     // Audio Voice Assistant
     voiceTitle: "नियम सुनें (बोलकर)",
     voiceDesc: "नियम आसान आवाज़ में सुनने के लिए दबाएं",
     voicePlaying: "नियम सुनाए जा रहे हैं... (रोकने के लिए दबाएं)",
-    voiceSpeech: "नमस्ते! 2XTRA वीआईपी लॉटरी में आपका स्वागत है। नियम बहुत ही सरल हैं: पहला, 5 USDT देकर अपना एक टिकट खरीदें। दूसरा, हर दिन शाम 8 बजे कंप्यूटर द्वारा दो भाग्यशाली विजेताओं को 125 USDT नकद इनाम मिलेगा और वे बाहर होंगे। तीसरा, यदि आज आपका नंबर नहीं आता, तो कल आपका टिकट बिना किसी अतिरिक्त शुल्क के अपने आप चलेगा जब तक आप न जीतें!",
+    voiceSpeech: "नमस्ते! 2XTRA वीआईपी लॉटरी में आपका स्वागत है। नियम बहुत ही सरल हैं: पहला, 5 USDT देकर अपना एक टिकट खरीदें। दूसरा, हर राउंड में दो भाग्यशाली विजेताओं को 125 USDT नकद इनाम मिलेगा और वे बाहर होंगे। तीसरा, यदि आज आपका नंबर नहीं आता, तो अगला राउंड बिना किसी अतिरिक्त शुल्क के अपने आप चलेगा जब तक आप न जीतें!",
 
     // 3 Quick Story Chips
     chip1Title: "1. टिकट लें",
     chip1Sub: "5 USDT प्रति सीट",
-    chip2Title: "2. रोज़ 2 विजेता",
+    chip2Title: "2. मासिक 2 विजेता",
     chip2Sub: "इनाम व निकासी",
     chip3Title: "3. स्वतः अगला राउंड",
     chip3Sub: "बिना पैसे दिए खेलें",
 
     // Hero Showcase
-    heroTag: "दैनिक बचत लॉटरी",
-    heroTitle: "60 सदस्यों का लकी ड्रॉ",
-    heroDesc: "सिर्फ एक बार 5 USDT देकर टिकट लें। हर दिन 2 विजेता भारी USDT इनाम लेकर बाहर होंगे। बाकी सभी सदस्य कल के ड्रॉ में बिना कोई नया पैसा दिए स्वतः शामिल होंगे!",
+    heroTag: "मासिक बचत लॉटरी",
+    heroTitle: "60 सदस्यों की मासिक लॉटरी",
+    heroDesc: "सिर्फ एक बार 5 USDT देकर टिकट लें। हर महीने 2 विजेता भारी USDT इनाम लेकर बाहर होंगे। बाकी सभी सदस्य अगले राउंड के ड्रॉ में बिना कोई नया पैसा दिए स्वतः शामिल होंगे!",
     statPrize: "आज का इनाम",
     statSeats: "कुल सीटें",
     statWinners: "विजेता / दिन",
@@ -363,11 +363,11 @@ const I18N = {
     viewerPoolBtn: "🔑 पूल में जुड़ने के लिए लॉगिन करें • ",
     viewerSpectatorBadge: "दर्शक दृश्य",
     guestWhy1Title: "100% निष्पक्ष ड्रॉ",
-    guestWhy1: "प्रत्येक राउंड का ड्रॉ HMAC SHA-256 क्रिप्टोग्राफिक हैश द्वारा पूर्ण पारदर्शी व निष्पक्ष होता है।",
+    guestWhy1: "HMAC SHA-256 क्रिप्टोग्राफी द्वारा 100% निष्पक्ष ड्रॉ।",
     guestWhy2Title: "स्वतः अगला राउंड फ्री",
-    guestWhy2: "यदि आज आपका नंबर नहीं आता, तो कल का राउंड बिना कोई नया पैसा दिए स्वतः मुफ्त में चलेगा।",
+    guestWhy2: "बिना जीते टिकट अगले राउंड में स्वतः 100% फ्री ट्रांसफर।",
     guestWhy3Title: "त्वरित USDT निकासी",
-    guestWhy3: "जीती हुई इनाम राशि तुरंत USDT में जमा होती है और 24/7 सीधे आपके क्रिप्टो वॉलेट (Binance, Trust Wallet) में निकाली जा सकती है।",
+    guestWhy3: "24/7 तुरंत USDT निकासी किसी भी क्रिप्टो वॉलेट में।",
     userGreetingPrefix: "वापसी पर स्वागत है,",
     userActiveSeatsLabel: "सक्रिय सीटें",
     userAddFundsBtn: "+ बैलेंस जोड़ें",
@@ -437,7 +437,7 @@ const Components = {
               <span class="wallet-balance-num">${Number(user.wallet_balance || 0).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} USDT</span>
             </div>
           ` : `
-            <button class="btn-vip primary" onclick="App.openModal('auth')" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: var(--radius-pill); box-shadow: 0 2px 8px rgba(0,122,255,0.25);">
+            <button class="btn-vip primary" onclick="App.navigateToAuth('login')" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: var(--radius-pill); box-shadow: 0 2px 8px rgba(0,122,255,0.25);">
               ${this.t('viewerActionSignIn', state)}
             </button>
           `}
@@ -585,10 +585,10 @@ const Components = {
             <div class="guest-banner-simple-text">${this.t('viewerBannerDesc', state)}</div>
           </div>
           <div class="guest-banner-actions">
-            <button class="btn-vip primary" onclick="App.openModal('auth')" style="padding: 7px 16px; font-size: 12px; font-weight: 700;">
+            <button class="btn-vip primary" onclick="App.navigateToAuth('login')" style="padding: 7px 16px; font-size: 12px; font-weight: 700;">
               ${this.t('viewerActionSignIn', state)}
             </button>
-            <button class="btn-vip gold" onclick="App.openRegisterModal()" style="padding: 7px 16px; font-size: 12px; font-weight: 700;">
+            <button class="btn-vip gold" onclick="App.navigateToAuth('register')" style="padding: 7px 16px; font-size: 12px; font-weight: 700;">
               ${this.t('viewerActionRegister', state)}
             </button>
           </div>
@@ -1041,10 +1041,10 @@ const Components = {
             <h2 class="guest-portal-title">${this.t('guestHubTitle', state)}</h2>
             <p class="guest-portal-desc">${this.t('guestHubDesc', state)}</p>
             <div class="guest-portal-btns">
-              <button class="btn-vip primary" onclick="App.openModal('auth')" style="padding: 12px 24px; font-size: 14px; font-weight: 700;">
+              <button class="btn-vip primary" onclick="App.navigateToAuth('login')" style="padding: 12px 24px; font-size: 14px; font-weight: 700;">
                 ${this.t('guestBtnSignIn', state)}
               </button>
-              <button class="btn-vip gold" onclick="App.openRegisterModal()" style="padding: 12px 24px; font-size: 14px; font-weight: 700;">
+              <button class="btn-vip gold" onclick="App.navigateToAuth('register')" style="padding: 12px 24px; font-size: 14px; font-weight: 700;">
                 ${this.t('guestBtnRegister', state)}
               </button>
             </div>
@@ -1462,6 +1462,95 @@ const Components = {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+    `;
+  },
+
+  // ==========================================================================
+  // DEDICATED AUTH PAGE (Separate Full Page for Sign In & Free Register)
+  // ==========================================================================
+  renderAuthPage(state, mode = 'login') {
+    const lang = (state && state.language) === 'en' ? 'en' : 'hi';
+    const isReg = mode === 'register';
+
+    return `
+      <div class="auth-page-wrapper">
+        <!-- Back Navigation Bar -->
+        <div class="auth-nav-bar">
+          <button class="auth-back-btn" onclick="App.navigateTo('pools')">
+            <span>←</span>
+            <span>${lang === 'en' ? 'Back to Lottery' : 'वापस लॉटरी पर जाएं'}</span>
+          </button>
+          <div style="font-size: 11px; font-weight: 700; color: var(--accent-gold);">
+            🔒 256-Bit SSL Encrypted
+          </div>
+        </div>
+
+        <!-- Auth Hero Brand Card -->
+        <div class="auth-page-hero">
+          <img src="assets/logo.jpg" alt="Logo" class="auth-page-logo">
+          <h2 class="auth-page-title">${isReg ? (lang === 'en' ? 'Create Free Account' : 'नया खाता खोलें') : (lang === 'en' ? 'Welcome Back' : 'वापसी पर स्वागत है')}</h2>
+          <p class="auth-page-subtitle">${isReg ? (lang === 'en' ? 'Join the 60-seat recurring lottery & claim USDT rewards' : '60-सीट लॉटरी में शामिल हों और USDT इनाम जीतें') : (lang === 'en' ? 'Sign in to access your wallet, view tickets & book seats' : 'अपने बटुए और बुक किए गए टिकट देखने के लिए लॉगिन करें')}</p>
+        </div>
+
+        <div class="glass-card" style="padding: 20px 16px;">
+          <!-- Sleek Segmented Switch: Sign In vs Free Register -->
+          <div class="auth-segment-switch">
+            <button class="auth-seg-btn ${!isReg ? 'active' : ''}" onclick="App.switchAuthPageMode('login')">
+              🔑 ${lang === 'en' ? 'Sign In' : 'लॉगिन करें'}
+            </button>
+            <button class="auth-seg-btn ${isReg ? 'active' : ''}" onclick="App.switchAuthPageMode('register')">
+              ✨ ${lang === 'en' ? 'Free Register' : 'नया खाता'}
+            </button>
+          </div>
+
+          <form id="authPageForm" onsubmit="App.handleAuthSubmit(event)">
+            ${isReg ? `
+              <div class="form-group">
+                <label class="form-label">${this.t('lblFullName', state)}</label>
+                <input type="text" class="form-input" id="authName" placeholder="e.g. Rahul Sharma" required style="font-size: 16px;">
+              </div>
+              <div class="form-group">
+                <label class="form-label">${this.t('lblEmail', state)}</label>
+                <input type="email" class="form-input" id="authEmail" placeholder="player@viplottery.com" required style="font-size: 16px;">
+              </div>
+            ` : ''}
+
+            <div class="form-group">
+              <label class="form-label">${this.t('lblMobile', state)}</label>
+              <input type="tel" class="form-input" id="authLoginId" placeholder="9876543210" required style="font-size: 16px; letter-spacing: 0.5px;">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">${this.t('lblPassword', state)}</label>
+              <input type="password" class="form-input" id="authPassword" placeholder="••••••••" required style="font-size: 16px;">
+            </div>
+
+            <button type="submit" class="btn-vip ${isReg ? 'gold' : 'primary'}" style="width: 100%; margin-top: 12px; padding: 14px; font-size: 15px; font-weight: 800;" id="authSubmitBtn">
+              ${isReg ? (lang === 'en' ? '✨ Create VIP Account' : '✨ नया वीआईपी खाता बनाएं') : (lang === 'en' ? '🔑 Sign In to 2XTRA' : '🔑 2XTRA में लॉगिन करें')}
+            </button>
+          </form>
+
+          <!-- Quick Test Demo Logins -->
+          <div style="margin-top: 20px; padding: 12px; background: rgba(0, 168, 255, 0.08); border-radius: var(--radius-md); text-align: center; font-size: 12px; border: 1px solid rgba(0, 168, 255, 0.18);">
+            <div style="font-weight: 700; color: var(--accent-blue); margin-bottom: 6px;">⚡ ${lang === 'en' ? 'Quick 1-Click Demo Accounts' : 'त्वरित 1-क्लिक टेस्ट खाते'}:</div>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+              <button type="button" class="btn-vip outline" style="padding: 6px 14px; font-size: 12px; font-weight: 700;" onclick="App.handleQuickDemoLogin('demo')">
+                👤 ${lang === 'en' ? 'Player (50 USDT)' : 'खिलाड़ी डेमो (50 USDT)'}
+              </button>
+              <button type="button" class="btn-vip outline" style="padding: 6px 14px; font-size: 12px; font-weight: 700;" onclick="App.handleQuickDemoLogin('admin')">
+                👑 ${lang === 'en' ? 'Master Admin' : 'मास्टर एडमिन'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="auth-trust-pills">
+          <span class="auth-trust-pill">🛡️ 100% Provably Fair</span>
+          <span class="auth-trust-pill">⚡ Instant USDT Payouts</span>
+          <span class="auth-trust-pill">🔄 Automatic Free Rollover</span>
         </div>
       </div>
     `;
