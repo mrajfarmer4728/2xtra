@@ -157,6 +157,9 @@ const App = {
     State.init();
     State.subscribe(() => this.render());
 
+    // Instant initial render with rich fallback data so user never sees a blank or loading screen
+    this.render();
+
     await this.refreshData();
     this.render();
   },

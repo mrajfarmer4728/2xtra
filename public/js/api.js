@@ -8,11 +8,14 @@ const MockDB = {
     } else {
       try {
         data = JSON.parse(data);
-        if (!data.pools || data.pools.length < 3) {
+        if (!data.pools || data.pools.length < 3 || !data.pools.find(p => p.id === 'pool_5') || data.pools.find(p => p.ticket_price === 500)) {
           data = this.initDefault();
           this.saveStorage(data);
         }
-      } catch(e) { data = this.initDefault(); }
+      } catch(e) {
+        data = this.initDefault();
+        this.saveStorage(data);
+      }
     }
     return data;
   },
@@ -125,15 +128,26 @@ const MockDB = {
       tickets: tickets,
       rounds: [
         {
-          id: "rnd_500_1",
-          pool_id: pool500.id,
+          id: "rnd_5_1",
+          pool_id: pool5.id,
           round_number: 1,
-          drawn_at: new Date(Date.now() - 86400000).toISOString(),
+          drawn_at: new Date(Date.now() - 3600000 * 14).toISOString(),
           winners: [
-            { ticket_number: 5, user_name: demoNames[4], prize: "125 USDT Prize" },
-            { ticket_number: 12, user_name: demoNames[11], prize: "125 USDT Prize" }
+            { ticket_number: 5, user_name: demoNames[4], prize: "125 USDT Cash Prize" },
+            { ticket_number: 12, user_name: demoNames[11], prize: "125 USDT Cash Prize" }
           ],
           rng_hash: "a4f8c9e1b2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7"
+        },
+        {
+          id: "rnd_1_1",
+          pool_id: pool1.id,
+          round_number: 1,
+          drawn_at: new Date(Date.now() - 3600000 * 14).toISOString(),
+          winners: [
+            { ticket_number: 4, user_name: demoNames[8], prize: "25 USDT Cash Prize" },
+            { ticket_number: 18, user_name: demoNames[15], prize: "25 USDT Cash Prize" }
+          ],
+          rng_hash: "e9b2c3d4a1f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4"
         }
       ],
       transactions: [

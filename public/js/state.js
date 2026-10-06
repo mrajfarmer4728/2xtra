@@ -1,15 +1,116 @@
-// Reactive Client State Management
+// Reactive Client State Management with Rich Fallback Dummy Data
+const DUMMY_POOLS = [
+  {
+    id: "pool_1",
+    title: "Starter 60-Seat Pool (1 USDT)",
+    max_participants: 60,
+    ticket_price: 1,
+    start_date: "Today at 8:00 PM",
+    current_round: 1,
+    status: "OPEN",
+    cycle_type: "DAILY",
+    reward_config: { "1": "25 USDT Cash Prize", "default": "25 USDT Cash Prize" },
+    total_sold: 50,
+    active_remaining: 48,
+    total_won: 2
+  },
+  {
+    id: "pool_5",
+    title: "VIP 60-Seat Knockout Pool (5 USDT)",
+    max_participants: 60,
+    ticket_price: 5,
+    start_date: "Today at 8:00 PM",
+    current_round: 1,
+    status: "OPEN",
+    cycle_type: "DAILY",
+    reward_config: { "1": "125 USDT Cash Prize", "2": "150 USDT Cash + VIP Pass", "default": "125 USDT Cash Prize" },
+    total_sold: 45,
+    active_remaining: 43,
+    total_won: 2
+  },
+  {
+    id: "pool_10",
+    title: "Mega 60-Seat Pool (10 USDT)",
+    max_participants: 60,
+    ticket_price: 10,
+    start_date: "Today at 8:00 PM",
+    current_round: 1,
+    status: "OPEN",
+    cycle_type: "DAILY",
+    reward_config: { "1": "250 USDT Cash Prize", "default": "250 USDT Cash Prize" },
+    total_sold: 48,
+    active_remaining: 46,
+    total_won: 2
+  }
+];
+
+const DUMMY_NAMES = [
+  "Aarav Patel", "Rohan Mehta", "Vikram Singh", "Pooja Verma", "Ananya Roy", 
+  "Rahul Sharma", "Karan Johar", "Deepak Kumar", "Amit Joshi", "Neha Sharma", 
+  "Suresh Raina", "Priya Nair", "Manish Malhotra", "Sunil Gavaskar", "Kavita Rao", 
+  "Rajesh Khanna", "Sanjay Dutt", "Alok Nath", "Manoj Bajpayee", "Dev Anand", 
+  "Abhishek Bachchan", "Ajay Devgn", "Varun Dhawan", "Sidharth Malhotra", "Ranbir Kapoor", 
+  "Kartik Aaryan", "Vicky Kaushal", "Ayushmann Khurrana", "Rajkummar Rao", "Pankaj Tripathi", 
+  "Nawazuddin Siddiqui", "Divyenndu Sharma", "Jaideep Ahlawat", "Vijay Varma", "Pratik Gandhi", 
+  "Adarsh Gourav", "Jitendra Kumar", "Bhuvan Bam", "Ashish Chanchlani", "Carry Minati", 
+  "Tanmay Bhat", "Zakir Khan", "Anubhav Bassi", "Abhishek Upmanyu", "Munawar Faruqui",
+  "Kishore Kumar", "Mohammed Rafi", "Lata Mangeshkar", "Asha Bhosle", "RD Burman", "Mukesh"
+];
+
+function generateFallbackTickets(poolId, price, count = 45) {
+  const tkts = [];
+  for (let i = 1; i <= count; i++) {
+    const isWon = (i === 5 || i === 12);
+    tkts.push({
+      id: `tkt_${price}_${i}`,
+      pool_id: poolId,
+      user_id: `demo_user_${price}_${i}`,
+      ticket_number: i,
+      name: DUMMY_NAMES[(i - 1) % DUMMY_NAMES.length] || `Player #${i}`,
+      status: isWon ? "WON" : "ACTIVE",
+      won_round: isWon ? 1 : null,
+      prize_info: isWon ? `${price * 25} USDT Cash` : null
+    });
+  }
+  return tkts;
+}
+
+const DUMMY_ROUNDS = [
+  {
+    id: "rnd_5_1",
+    pool_id: "pool_5",
+    round_number: 1,
+    drawn_at: new Date(Date.now() - 3600000 * 14).toISOString(),
+    winners: [
+      { ticket_number: 5, user_name: "Ananya Roy", prize: "125 USDT Cash" },
+      { ticket_number: 12, user_name: "Priya Nair", prize: "125 USDT Cash" }
+    ],
+    rng_hash: "a4f8c9e1b2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7"
+  },
+  {
+    id: "rnd_1_1",
+    pool_id: "pool_1",
+    round_number: 1,
+    drawn_at: new Date(Date.now() - 3600000 * 14).toISOString(),
+    winners: [
+      { ticket_number: 4, user_name: "Amit Joshi", prize: "25 USDT Cash" },
+      { ticket_number: 18, user_name: "Rajesh Khanna", prize: "25 USDT Cash" }
+    ],
+    rng_hash: "e9b2c3d4a1f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4"
+  }
+];
+
 const State = {
   currentUser: null,
   activeTab: 'pools',
   profileSubTab: 'wallet', // 'wallet' | 'tickets' | 'kyc'
-  allPools: [],
+  allPools: DUMMY_POOLS,
   selectedPoolPrice: 5,
   poolViewTab: 'available', // 'available' | 'ongoing'
   ongoingFilter: 'ALL', // 'ALL' | 'ACTIVE' | 'WON'
-  currentPool: null,
-  poolTickets: [],
-  poolRounds: [],
+  currentPool: DUMMY_POOLS[1],
+  poolTickets: generateFallbackTickets("pool_5", 5, 45),
+  poolRounds: DUMMY_ROUNDS,
   myTickets: [],
   walletHistory: [],
   adminData: null,
@@ -40,6 +141,7 @@ const State = {
       const match = this.allPools.find(p => Number(p.ticket_price) === num);
       if (match) {
         this.currentPool = match;
+        this.poolTickets = generateFallbackTickets(match.id, num, num === 1 ? 50 : 45);
       }
     }
     this.notify();
