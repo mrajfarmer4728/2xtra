@@ -1,14 +1,22 @@
 // API Client for VIP Lottery System (Hybrid: Python Server Backend + GitHub Pages Offline DB)
 const MockDB = {
+  DB_KEY: 'vip_lottery_mock_db_v4',
   getStorage() {
-    let data = localStorage.getItem('vip_lottery_mock_db');
+    // Clear out any old legacy mock databases with sequential tickets
+    try {
+      localStorage.removeItem('vip_lottery_mock_db');
+      localStorage.removeItem('vip_lottery_mock_db_v2');
+      localStorage.removeItem('vip_lottery_mock_db_v3');
+    } catch(e) {}
+
+    let data = localStorage.getItem(this.DB_KEY);
     if (!data) {
       data = this.initDefault();
       this.saveStorage(data);
     } else {
       try {
         data = JSON.parse(data);
-        if (!data.pools || data.pools.length < 3 || !data.pools.find(p => p.id === 'pool_5') || data.pools.find(p => p.ticket_price === 500)) {
+        if (!data.pools || data.pools.length < 3 || !data.pools.find(p => p.id === 'pool_5')) {
           data = this.initDefault();
           this.saveStorage(data);
         }
@@ -20,7 +28,7 @@ const MockDB = {
     return data;
   },
   saveStorage(data) {
-    localStorage.setItem('vip_lottery_mock_db', JSON.stringify(data));
+    localStorage.setItem(this.DB_KEY, JSON.stringify(data));
   },
   initDefault() {
     const pool1 = {
@@ -510,3 +518,6 @@ const API = {
     }
   }
 };
+
+window.API = API;
+window.MockDB = MockDB;

@@ -283,3 +283,5 @@ const State = {
     this.listeners.forEach(fn => fn(this));
   }
 };
+
+window.State = State;

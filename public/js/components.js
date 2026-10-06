@@ -1904,3 +1904,5 @@ const Components = {
     `;
   }
 };
+
+window.Components = Components;

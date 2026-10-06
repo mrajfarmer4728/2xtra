@@ -15,24 +15,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css?v=4.0">
+  <link rel="stylesheet" href="css/components.css?v=4.0">
+  <link rel="stylesheet" href="css/animations.css?v=4.0">
 </head>
 <body>
   <script>
-    // Strict iOS Safari Auto-Zoom Prevention
+    // Strict iOS Safari Pinch-Zoom Prevention (gesture events only, without blocking touch taps)
     document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
     document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
     document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(e) {
-      const now = Date.now();
-      if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-      }
-      lastTouchEnd = now;
-    }, false);
   </script>
   <div class="app-container" id="appRoot">
     <!-- Rendered dynamically by JavaScript -->
@@ -41,10 +33,10 @@
     </div>
   </div>
 
-  <!-- Application Logic -->
-  <script src="js/api.js"></script>
-  <script src="js/state.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Application Logic (Cache-busted for immediate GitHub Pages update) -->
+  <script src="js/api.js?v=4.0"></script>
+  <script src="js/state.js?v=4.0"></script>
+  <script src="js/components.js?v=4.0"></script>
+  <script src="js/app.js?v=4.0"></script>
 </body>
 </html>
