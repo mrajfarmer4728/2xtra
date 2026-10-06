@@ -158,15 +158,11 @@ const I18N = {
     themeLightActive: "Bright Mode (Default)",
     themeDarkActive: "Dark Mode Active",
 
-    // Normal Viewer vs Logged-In User Experience
-    viewerModeBadge: "Public Spectator Mode",
-    viewerBannerTitle: "Public Spectator Mode",
+    // Guest vs Logged-In User Experience
     viewerBannerDesc: "Sign in to reserve your seat & participate in today's live draw.",
     viewerActionSignIn: "🔑 Sign In",
     viewerActionRegister: "✨ Create Free Account",
-    viewerPoolNotice: "👀 Public Spectator Mode",
     viewerPoolBtn: "🔑 Sign In to Join Pool • ",
-    viewerSpectatorBadge: "Spectator View",
     guestWhy1Title: "100% Provably Fair",
     guestWhy1: "Cryptographically verifiable draws using HMAC SHA-256.",
     guestWhy2: "Free Rollover",
@@ -190,9 +186,7 @@ const I18N = {
     faqQ2: "What if my ticket is not drawn today?",
     faqA2: "You don't lose your money! All remaining participants automatically roll over to tomorrow's draw for 100% free until you win.",
     faqQ3: "How do I deposit and withdraw?",
-    faqA3: "Deposit instantly using USDT (TRC-20 / BEP-20). Winnings can be withdrawn 24/7 directly to your personal crypto wallet (Binance, Trust Wallet, etc.) with zero delays.",
-    spectatorDrawBadge: "PUBLIC SPECTATOR ARENA",
-    spectatorDrawNotice: "You are watching in Public Spectator Mode. Draw runs provably fair with HMAC SHA-256. Sign in to participate in the next round."
+    faqA3: "Deposit instantly using USDT (TRC-20 / BEP-20). Winnings can be withdrawn 24/7 directly to your personal crypto wallet (Binance, Trust Wallet, etc.) with zero delays."
   },
 
   hi: {
@@ -353,15 +347,11 @@ const I18N = {
     themeLightActive: "ब्राइट मोड (सफेद)",
     themeDarkActive: "डार्क मोड (काला)",
 
-    // Normal Viewer vs Logged-In User Experience
-    viewerModeBadge: "सार्वजनिक दर्शक मोड",
-    viewerBannerTitle: "सार्वजनिक दर्शक मोड",
+    // Guest vs Logged-In User Experience
     viewerBannerDesc: "सीट बुक करने और आज के लाइव ड्रॉ में भाग लेने के लिए लॉगिन करें।",
     viewerActionSignIn: "🔑 लॉगिन करें",
     viewerActionRegister: "✨ नया खाता खोलें",
-    viewerPoolNotice: "👀 सार्वजनिक दर्शक मोड",
     viewerPoolBtn: "🔑 पूल में जुड़ने के लिए लॉगिन करें • ",
-    viewerSpectatorBadge: "दर्शक दृश्य",
     guestWhy1Title: "100% निष्पक्ष ड्रॉ",
     guestWhy1: "HMAC SHA-256 क्रिप्टोग्राफी द्वारा 100% निष्पक्ष ड्रॉ।",
     guestWhy2Title: "स्वतः अगला राउंड फ्री",
@@ -372,7 +362,7 @@ const I18N = {
     userActiveSeatsLabel: "सक्रिय सीटें",
     userAddFundsBtn: "+ बैलेंस जोड़ें",
     userMySeatsBtn: "मेरी सीटें",
-    guestHubTitle: "दर्शक खाता पोर्टल",
+    guestHubTitle: "खाता पोर्टल",
     guestHubDesc: "आप वर्तमान में एक अतिथि के रूप में 2XTRA देख रहे हैं। अपने व्यक्तिगत वॉलेट तक पहुँचने, टिकट बुक करने और जीत की राशि निकालने के लिए लॉगिन करें या नया खाता बनाएं।",
     guestBtnSignIn: "🔑 अपने खाते में लॉगिन करें",
     guestBtnRegister: "✨ मुफ्त नया खाता खोलें",
@@ -385,9 +375,7 @@ const I18N = {
     faqQ2: "अगर आज मेरा नंबर नहीं आया तो?",
     faqA2: "आपके पैसे नहीं डूबते! बाकी सभी सदस्य अगले दिन के ड्रॉ में बिना कोई नया पैसा दिए स्वतः शामिल होते हैं जब तक वे जीत न जाएं।",
     faqQ3: "जमा और निकासी कैसे करें?",
-    faqA3: "USDT (TRC-20 / BEP-20) द्वारा तुरंत जमा करें। जीती हुई राशि 24/7 सीधे अपने क्रिप्टो वॉलेट (Binance, Trust Wallet) में निकालें।",
-    spectatorDrawBadge: "सार्वजनिक दर्शक अखाड़ा",
-    spectatorDrawNotice: "आप सार्वजनिक दर्शक मोड में देख रहे हैं। ड्रॉ पूर्णतः निष्पक्ष HMAC SHA-256 पर आधारित है। अगले राउंड में भाग लेने के लिए लॉगिन करें।"
+    faqA3: "USDT (TRC-20 / BEP-20) द्वारा तुरंत जमा करें। जीती हुई राशि 24/7 सीधे अपने क्रिप्टो वॉलेट (Binance, Trust Wallet) में निकालें।"
   }
 };
 
@@ -569,13 +557,9 @@ const Components = {
       ${this.renderStoryChips(state)}
 
       ${!isLogged ? `
-        <!-- Normal Viewer (Guest) Callout Banner (Short & Simple) -->
+        <!-- Quick Guest Sign In / Register Bar -->
         <div class="guest-banner-card">
           <div class="guest-banner-left">
-            <span class="guest-banner-badge">
-              <span class="pulse-dot-cyan"></span>
-              ${this.t('viewerModeBadge', state)}
-            </span>
             <div class="guest-banner-simple-text">${this.t('viewerBannerDesc', state)}</div>
           </div>
           <div class="guest-banner-actions">
@@ -945,7 +929,7 @@ const Components = {
     return `
       <div class="live-draw-stage">
         <div class="draw-title-badge">
-          ${isLogged ? this.t('drawBadge', state) : this.t('spectatorDrawBadge', state)} • ${this.t('roundBadge', state)}${curRound}
+          ${this.t('drawBadge', state)} • ${this.t('roundBadge', state)}${curRound}
         </div>
         <h2 style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px;">
           ${this.t('drawHeading', state)}
@@ -976,10 +960,9 @@ const Components = {
               ${this.t('drawAutoNote', state)}
             </div>
           ` : `
-            <div style="display: inline-block; background: rgba(0, 122, 255, 0.08); border: 1px solid rgba(0, 122, 255, 0.25); padding: 10px 20px; border-radius: var(--radius-md); font-size: 13px; color: var(--text-primary); max-width: 440px;">
-              <div style="font-weight: 700; color: var(--accent-blue); margin-bottom: 4px;">👀 ${this.t('spectatorDrawBadge', state)}</div>
-              <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">${this.t('spectatorDrawNotice', state)}</div>
-              <button class="btn-vip primary" onclick="App.openModal('auth')" style="padding: 6px 14px; font-size: 12px;">${this.t('viewerActionSignIn', state)}</button>
+            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: rgba(0, 122, 255, 0.08); border: 1px solid rgba(0, 122, 255, 0.25); padding: 8px 18px; border-radius: var(--radius-pill); font-size: 13px; color: var(--text-primary); flex-wrap: wrap;">
+              <span>${this.t('drawAutoNote', state)}</span>
+              <button class="btn-vip primary" onclick="App.navigateToAuth('login')" style="padding: 5px 14px; font-size: 12px; font-weight: 700;">${this.t('viewerActionSignIn', state)}</button>
             </div>
           `)}
         </div>
