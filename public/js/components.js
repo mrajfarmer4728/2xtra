@@ -749,7 +749,7 @@ const Components = {
                   const ticket = tickets.find(t => t.ticket_number === seatNum);
                   if (!ticket) {
                     return `
-                      <div class="seat-node empty-seat" title="Seat #${seatNum} is Available" onclick="${!user ? `App.handleGuestSeatClick(${seatNum})` : `App.buyTicket('${pool.id}')`}">
+                      <div class="seat-node empty-seat" title="Seat #${seatNum} is Available (Click to Book)" onclick="App.openSeatBookingModal(${seatNum}, '${pool.id}')">
                         <span>#${seatNum}</span>
                         <span class="seat-subtext">${this.t('seatOpen', state)}</span>
                       </div>
@@ -759,10 +759,10 @@ const Components = {
                   // In Available View: No win clutter, only You or Booked!
                   const nodeClass = isMine ? 'my-seat' : 'active-occupied';
                   const subText = isMine ? this.t('seatYou', state) : this.t('seatBooked', state);
-                  const tooltip = isMine ? `Your Seat #${seatNum}` : `Seat #${seatNum} (Booked)`;
+                  const tooltip = isMine ? `Your Seat #${seatNum} (Active in Draw)` : `Seat #${seatNum} (Booked by ${ticket.name || 'player'})`;
 
                   return `
-                    <div class="seat-node ${nodeClass}" title="${tooltip}">
+                    <div class="seat-node ${nodeClass}" title="${tooltip}" onclick="App.handleBookedSeatClick(${seatNum}, ${isMine ? 'true' : 'false'})">
                       <span>#${seatNum}</span>
                       <span class="seat-subtext">${subText}</span>
                     </div>
@@ -780,7 +780,7 @@ const Components = {
 
             <div>
               ${!user ? `
-                <button class="btn-vip primary" onclick="App.openModal('auth')" style="font-size: 14px; padding: 12px 24px; box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);">
+                <button class="btn-vip primary" onclick="App.openSeatBookingModal(null, '${pool.id}')" style="font-size: 14px; padding: 12px 24px; box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);">
                   ${this.t('viewerPoolBtn', state)}${pool.ticket_price} USDT
                 </button>
               ` : (!isKYCApproved ? `
@@ -792,7 +792,7 @@ const Components = {
                   ${this.t('btnFull', state)}
                 </button>
               ` : `
-                <button class="btn-vip gold" onclick="App.buyTicket('${pool.id}')" style="font-size: 14px; padding: 12px 24px;">
+                <button class="btn-vip gold" onclick="App.openSeatBookingModal(null, '${pool.id}')" style="font-size: 14px; padding: 12px 24px;">
                   ${this.t('btnBuy', state)}${pool.ticket_price} USDT
                 </button>
               `))}
@@ -1710,10 +1710,196 @@ const Components = {
         </div>
       </div>
 
+      ${this.renderSeatBookingModal(state)}
+
       <!-- Floating Compact WhatsApp Pill -->
       <div class="floating-whatsapp-btn" onclick="App.openWhatsAppHelp()" title="${this.t('whatsappLabel', state)}">
         <span style="font-size: 15px;">💬</span>
         <span>WhatsApp</span>
+      </div>
+    `;
+  },
+
+  // Movie Ticket Style Seat Booking Modal
+  renderSeatBookingModal(state) {
+    const isEn = (state && state.language) === 'en';
+    return `
+      <!-- Movie Ticket Style Seat Booking Modal -->
+      <div class="ios-modal-backdrop" id="modal-seat-booking" onclick="App.handleBackdropClick(event, 'seat-booking')">
+        <div class="ios-bottom-sheet seat-booking-sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 20px;">🎟️</span>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: var(--text-primary);">
+                ${isEn ? 'Seat Booking Details' : 'टिकट बुकिंग विवरण'}
+              </h3>
+            </div>
+            <button class="sheet-close-btn" onclick="App.closeModal('seat-booking')" title="Close">✕</button>
+          </div>
+
+          <div id="seatBookingBody">
+            ${this.renderSeatBookingBody(state)}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  renderSeatBookingBody(state) {
+    const pool = (state && state.currentPool) || (state && state.allPools && state.allPools[1]) || { ticket_price: 5, current_round: 1, title: 'VIP PRO Pool' };
+    const tickets = (state && state.poolTickets) || [];
+    const selectedSeats = (state && state.selectedBookingSeats && state.selectedBookingSeats.length > 0) ? state.selectedBookingSeats : [14];
+    const price = Number(pool.ticket_price || 5);
+    const totalAmount = selectedSeats.length * price;
+    const user = state && state.currentUser;
+    const isKYCApproved = user && user.kyc_status === 'APPROVED';
+    const isEn = (state && state.language) === 'en';
+    const curRound = pool.current_round || 1;
+    const rewards = pool.reward_config ? (typeof pool.reward_config === 'string' ? JSON.parse(pool.reward_config) : pool.reward_config) : {};
+    const curPrize = rewards[String(curRound)] || rewards['default'] || (price * 25 + ' USDT Cash');
+
+    // Available open seats (excluding already selected seats)
+    const openSeats = [];
+    const maxParticipants = pool.max_participants || 60;
+    for (let s = 1; s <= maxParticipants; s++) {
+      if (!tickets.some(t => t.ticket_number === s) && !selectedSeats.includes(s)) {
+        openSeats.push(s);
+      }
+    }
+
+    const firstSeat = selectedSeats[0];
+    const firstCode = this.getTicketCode(firstSeat, pool.ticket_price);
+
+    return `
+      <div class="booking-modal-inner">
+        <!-- Visual Ticket Stub / Card Details -->
+        <div class="booking-ticket-card">
+          <div class="booking-ticket-top">
+            <span class="badge-live-round">● ${this.t('roundBadge', state)}${curRound} In Progress</span>
+            <span class="status-badge gold">${pool.ticket_price} USDT Pool</span>
+          </div>
+
+          <div class="booking-ticket-main">
+            <div class="booking-seat-display">
+              <span class="booking-seat-label">${isEn ? 'Selected Seat' : 'चुनी गई सीट'}</span>
+              <span class="booking-seat-num">#${selectedSeats.join(', #')}</span>
+            </div>
+            <div class="booking-code-pill">
+              <span style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Ticket Code</span>
+              <strong style="font-family: monospace; font-size: 13px; color: var(--accent-cyan); letter-spacing: 0.5px;">${firstCode}${selectedSeats.length > 1 ? ` (+${selectedSeats.length - 1})` : ''}</strong>
+            </div>
+          </div>
+
+          <div class="booking-specs-grid">
+            <div class="booking-spec-item">
+              <span class="spec-label">${isEn ? 'Ticket Price' : 'टिकट मूल्य'}</span>
+              <span class="spec-val">${price} USDT</span>
+            </div>
+            <div class="booking-spec-item">
+              <span class="spec-label">${isEn ? 'Win Potential' : 'संभावित जीत'}</span>
+              <span class="spec-val gold">${curPrize}</span>
+            </div>
+            <div class="booking-spec-item">
+              <span class="spec-label">${isEn ? 'Draw Schedule' : 'ड्रॉ समय'}</span>
+              <span class="spec-val">Today 8:00 PM</span>
+            </div>
+            <div class="booking-spec-item">
+              <span class="spec-label">${isEn ? 'Knockout Rule' : 'नियम'}</span>
+              <span class="spec-val green">2 Win & Exit Daily</span>
+            </div>
+          </div>
+
+          <div class="booking-guarantee-strip">
+            <span>🔄 <strong>100% Free Rollover:</strong> ${isEn ? 'If not drawn today, your ticket rolls over to the next round with 0 extra fees until you win!' : 'यदि आज नहीं निकलता, तो बिना किसी शुल्क के अगले राउंड में स्वतः 100% फ्री ट्रांसफर जब तक आप न जीतें!'}</span>
+          </div>
+        </div>
+
+        <!-- Add Option: Ticket Number Selector -->
+        <div class="booking-add-section">
+          <div class="booking-section-header">
+            <span class="section-title">
+              🎟️ ${isEn ? 'Selected Seat(s)' : 'चुनी गई सीटें'} (${selectedSeats.length})
+            </span>
+            <span style="font-size: 11px; color: var(--text-secondary);">
+              ${isEn ? 'Tap ✕ to remove or add more below' : 'सीट हटाने के लिए ✕ दबाएं'}
+            </span>
+          </div>
+
+          <!-- Selected Seat Chips -->
+          <div class="selected-seats-chips-bar">
+            ${selectedSeats.map(s => `
+              <span class="booking-seat-chip">
+                <span>#${s}</span>
+                ${selectedSeats.length > 1 ? `
+                  <button type="button" class="btn-chip-remove" onclick="App.removeBookingSeat(${s})" title="Remove Seat #${s}">✕</button>
+                ` : ''}
+              </span>
+            `).join('')}
+          </div>
+
+          <!-- Add Seats Controls -->
+          ${openSeats.length > 0 ? `
+            <div class="quick-add-controls">
+              <div class="quick-add-lbl">
+                <span>➕ ${isEn ? 'Add another ticket / seat number:' : 'अन्य सीट नंबर जोड़ें:'}</span>
+              </div>
+              <div class="quick-seats-scroll">
+                ${openSeats.slice(0, 8).map(s => `
+                  <button type="button" class="btn-quick-seat-pill" onclick="App.addBookingSeat(${s})" title="Add Seat #${s}">
+                    +#${s}
+                  </button>
+                `).join('')}
+              </div>
+
+              <!-- Custom Seat Dropdown Picker -->
+              <div class="dropdown-seat-add-row">
+                <select id="seatSelectDropdown" class="form-input" style="padding: 7px 10px; font-size: 12.5px; font-weight: 700; flex: 1;">
+                  ${openSeats.map(s => `<option value="${s}">Seat #${s} (Available)</option>`).join('')}
+                </select>
+                <button type="button" class="btn-vip outline" onclick="App.addSeatFromDropdown()" style="padding: 7px 14px; font-size: 12px; font-weight: 800; white-space: nowrap;">
+                  + ${isEn ? 'Add Seat' : 'जोड़ें'}
+                </button>
+              </div>
+            </div>
+          ` : `
+            <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px;">All available seats in this pool are selected!</div>
+          `}
+        </div>
+
+        <!-- Total Cost & Booking Action -->
+        <div class="booking-footer-action">
+          <div class="booking-cost-calc">
+            <span style="font-size: 12px; color: var(--text-secondary); font-weight: 600;">
+              ${selectedSeats.length} Seat${selectedSeats.length > 1 ? 's' : ''} × ${price} USDT:
+            </span>
+            <span class="booking-total-number">${totalAmount} USDT</span>
+          </div>
+
+          ${!user ? `
+            <button type="button" class="btn-vip primary" onclick="App.openAuthFromBooking()" style="width: 100%; padding: 13px; font-size: 14.5px; font-weight: 800; box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);">
+              🔑 ${isEn ? 'Sign In to Book' : 'सीट बुक करने के लिए लॉगिन करें'} • ${totalAmount} USDT
+            </button>
+          ` : (!isKYCApproved ? `
+            <button type="button" class="btn-vip gold" onclick="App.openKycFromBooking()" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 800;">
+              🛡️ ${this.t('btnKyc', state)} (${totalAmount} USDT)
+            </button>
+          ` : (Number(user.wallet_balance || 0) < totalAmount ? `
+            <div style="margin-bottom: 6px; text-align: center; font-size: 12px; color: #ef4444; font-weight: 600;">
+              ${isEn ? 'Wallet Balance:' : 'वॉलेट बैलेंस:'} ${Number(user.wallet_balance || 0).toFixed(2)} USDT (${isEn ? 'Insufficient' : 'अपर्याप्त'})
+            </div>
+            <button type="button" class="btn-vip gold" onclick="App.openDepositFromBooking()" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 800;">
+              + ${isEn ? 'Deposit USDT to Complete Booking' : 'बुकिंग पूरी करने के लिए USDT जमा करें'}
+            </button>
+          ` : `
+            <div style="margin-bottom: 6px; text-align: center; font-size: 12px; color: var(--text-secondary);">
+              🪙 ${isEn ? 'Wallet Balance:' : 'वॉलेट बैलेंस:'} <strong style="color: var(--accent-gold);">${Number(user.wallet_balance || 0).toFixed(2)} USDT</strong>
+            </div>
+            <button type="button" class="btn-vip gold" onclick="App.confirmSeatBooking()" id="confirmBookBtn" style="width: 100%; padding: 13px; font-size: 15px; font-weight: 900; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);">
+              ⚡ ${isEn ? 'Confirm & Book Ticket' : 'टिकट बुक करें'} (${totalAmount} USDT)
+            </button>
+          `))}
+        </div>
       </div>
     `;
   }

@@ -344,11 +344,11 @@ const API = {
     }
   },
 
-  async buyTicket(user_id, pool_id) {
+  async buyTicket(user_id, pool_id, requested_seat = null) {
     try {
       return await this.request('/api/pools/buy-ticket', {
         method: 'POST',
-        body: JSON.stringify({ user_id, pool_id }),
+        body: JSON.stringify({ user_id, pool_id, seat_number: requested_seat }),
       });
     } catch (e) {
       const db = MockDB.getStorage();
@@ -360,13 +360,27 @@ const API = {
       const currentTkts = db.tickets.filter(t => t.pool_id === pool.id);
       if (currentTkts.length >= pool.max_participants) throw new Error('Pool is already full!');
 
-      const nextSeat = currentTkts.length + 1;
+      let targetSeat = requested_seat ? Number(requested_seat) : null;
+      if (targetSeat) {
+        if (currentTkts.some(t => t.ticket_number === targetSeat)) {
+          throw new Error(`Seat #${targetSeat} is already booked!`);
+        }
+      } else {
+        for (let s = 1; s <= pool.max_participants; s++) {
+          if (!currentTkts.some(t => t.ticket_number === s)) {
+            targetSeat = s;
+            break;
+          }
+        }
+      }
+      if (!targetSeat) throw new Error('No available seats remaining in this pool!');
+
       u.wallet_balance -= pool.ticket_price;
       const newTkt = {
-        id: 'tkt_' + Date.now(),
+        id: 'tkt_' + Date.now() + '_' + targetSeat,
         pool_id: pool.id,
         user_id: u.id,
-        ticket_number: nextSeat,
+        ticket_number: targetSeat,
         name: u.name,
         status: 'ACTIVE',
         won_round: null,
@@ -374,15 +388,15 @@ const API = {
       };
       db.tickets.push(newTkt);
       db.transactions.unshift({
-        id: 'tx_' + Date.now(),
+        id: 'tx_' + Date.now() + '_' + targetSeat,
         user_id: u.id,
         type: 'TICKET_PURCHASE',
         amount: pool.ticket_price,
-        remarks: `Seat #${nextSeat} Booked (${pool.title})`,
+        remarks: `Seat #${targetSeat} Booked (${pool.title})`,
         created_at: new Date().toISOString()
       });
       MockDB.saveStorage(db);
-      return { message: `Ticket #${nextSeat} successfully booked!`, ticket: newTkt, new_balance: u.wallet_balance };
+      return { message: `Ticket #${targetSeat} successfully booked!`, ticket: newTkt, new_balance: u.wallet_balance, ticket_number: targetSeat };
     }
   },
 

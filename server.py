@@ -488,7 +488,29 @@ class LotteryAppHandler(http.server.SimpleHTTPRequestHandler):
                     conn.close()
                     return self._send_json(400, {"error": "Pool is full! Maximum participants reached."})
 
-                next_ticket_num = total_bought + 1
+                requested_seat = body.get("seat_number")
+                if requested_seat:
+                    try:
+                        seat_num = int(requested_seat)
+                        c.execute("SELECT COUNT(*) FROM tickets WHERE pool_id = ? AND ticket_number = ?", (pool_id, seat_num))
+                        if c.fetchone()[0] > 0:
+                            conn.close()
+                            return self._send_json(400, {"error": f"Seat #{seat_num} is already booked"})
+                        next_ticket_num = seat_num
+                    except (ValueError, TypeError):
+                        next_ticket_num = total_bought + 1
+                else:
+                    c.execute("SELECT ticket_number FROM tickets WHERE pool_id = ?", (pool_id,))
+                    taken = {r[0] for r in c.fetchall()}
+                    next_ticket_num = None
+                    for s in range(1, pool["max_participants"] + 1):
+                        if s not in taken:
+                            next_ticket_num = s
+                            break
+                    if next_ticket_num is None:
+                        conn.close()
+                        return self._send_json(400, {"error": "No available seats left in this pool"})
+
                 ticket_id = f"tkt_{pool_id}_{next_ticket_num:03d}"
 
                 # Deduct balance & create ticket

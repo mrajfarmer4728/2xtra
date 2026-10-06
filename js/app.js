@@ -367,11 +367,137 @@ const App = {
     this.navigateToAuth('login');
   },
 
-  handleGuestSeatClick(seatNum) {
+  openSeatBookingModal(seatNum, poolId) {
+    this.playClick();
+    if (poolId) {
+      State.selectedBookingPoolId = poolId;
+      const match = State.allPools.find(p => p.id === poolId);
+      if (match) State.currentPool = match;
+    }
+    const pool = State.currentPool || State.allPools[1];
+    const tickets = State.poolTickets || [];
+    
+    // Find initial open seat if not provided
+    let initialSeat = seatNum ? Number(seatNum) : null;
+    if (!initialSeat) {
+      for (let s = 1; s <= (pool.max_participants || 60); s++) {
+        if (!tickets.some(t => t.ticket_number === s)) {
+          initialSeat = s;
+          break;
+        }
+      }
+    }
+    State.setSelectedBookingSeats(initialSeat ? [initialSeat] : [14]);
+    this.openModal('seat-booking');
+    this.updateBookingModalBody();
+  },
+
+  handleBookedSeatClick(seatNum, isMine) {
     this.playClick();
     const isEn = State.language === 'en';
-    this.showToast(isEn ? `🔑 Please sign in to book Seat #${seatNum}!` : `🔑 सीट #${seatNum} बुक करने के लिए कृपया लॉगिन करें!`);
+    if (isMine) {
+      this.showToast(isEn ? `🎟️ Seat #${seatNum} is already yours and active in the live draw!` : `🎟️ सीट #${seatNum} पहले से आपकी है और लाइव ड्रॉ में सक्रिय है!`);
+    } else {
+      this.showToast(isEn ? `🔒 Seat #${seatNum} is already booked by another player. Please select an available seat.` : `🔒 सीट #${seatNum} अन्य खिलाड़ी द्वारा बुक है। कृपया खाली सीट चुनें।`);
+    }
+  },
+
+  addBookingSeat(seatNum) {
+    this.playClick();
+    State.addBookingSeat(seatNum);
+    this.updateBookingModalBody();
+  },
+
+  removeBookingSeat(seatNum) {
+    this.playClick();
+    State.removeBookingSeat(seatNum);
+    this.updateBookingModalBody();
+  },
+
+  addSeatFromDropdown() {
+    this.playClick();
+    const select = document.getElementById('seatSelectDropdown');
+    if (select && select.value) {
+      State.addBookingSeat(Number(select.value));
+      this.updateBookingModalBody();
+    }
+  },
+
+  updateBookingModalBody() {
+    const el = document.getElementById('seatBookingBody');
+    if (el) {
+      el.innerHTML = Components.renderSeatBookingBody(State);
+    }
+  },
+
+  openAuthFromBooking() {
+    this.closeModal('seat-booking');
     this.navigateToAuth('login');
+  },
+
+  openKycFromBooking() {
+    this.closeModal('seat-booking');
+    this.openModal('kyc');
+  },
+
+  openDepositFromBooking() {
+    this.closeModal('seat-booking');
+    this.openModal('deposit');
+  },
+
+  async confirmSeatBooking() {
+    this.playClick();
+    if (!State.currentUser) {
+      this.openAuthFromBooking();
+      return;
+    }
+
+    if (State.currentUser.kyc_status !== 'APPROVED') {
+      this.openKycFromBooking();
+      this.showToast('⚠️ पहले आधार या पैन कार्ड जोड़ें (सिर्फ 10 सेकंड लगेंगे)।');
+      return;
+    }
+
+    const pool = State.currentPool || State.allPools[1];
+    const seatsToBook = [...(State.selectedBookingSeats || [])];
+    if (seatsToBook.length === 0) {
+      this.showToast('⚠️ Please select at least one seat.');
+      return;
+    }
+
+    const totalCost = seatsToBook.length * Number(pool.ticket_price);
+    if (Number(State.currentUser.wallet_balance || 0) < totalCost) {
+      this.showToast(State.language === 'en' ? `❌ Insufficient balance (${totalCost} USDT required). Please deposit USDT.` : `❌ बटुए में बैलेंस कम है (${totalCost} USDT आवश्यक)। कृपया पहले USDT जमा करें।`);
+      this.openDepositFromBooking();
+      return;
+    }
+
+    const btn = document.getElementById('confirmBookBtn');
+    if (btn) btn.disabled = true;
+
+    try {
+      for (const seatNum of seatsToBook) {
+        await API.buyTicket(State.currentUser.id, pool.id, seatNum);
+      }
+      State.updateBalance(Number(State.currentUser.wallet_balance) - totalCost);
+      this.closeModal('seat-booking');
+      this.playWinFanfare();
+      this.launchConfetti();
+      const seatStr = seatsToBook.map(s => `#${s}`).join(', ');
+      this.showToast(State.language === 'en' 
+        ? `🎉 Congratulations! Seat(s) ${seatStr} successfully booked in ${pool.title}!` 
+        : `🎉 बधाई हो! सीट(ें) ${seatStr} सफलतापूर्वक बुक हो गईं!`
+      );
+      await this.refreshData();
+      this.render();
+    } catch (err) {
+      if (btn) btn.disabled = false;
+      this.showToast(`❌ ${err.message}`);
+    }
+  },
+
+  handleGuestSeatClick(seatNum) {
+    this.openSeatBookingModal(seatNum);
   },
 
   async handleQuickDemoLogin(type = 'demo') {

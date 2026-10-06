@@ -57,21 +57,47 @@ const DUMMY_NAMES = [
   "Kishore Kumar", "Mohammed Rafi", "Lata Mangeshkar", "Asha Bhosle", "RD Burman", "Mukesh"
 ];
 
-function generateFallbackTickets(poolId, price, count = 45) {
+function generateFallbackTickets(poolId, price, count = 44) {
+  // Realistic scattered movie-theater seat distribution (out of 60 seats)
+  let openSeatNumbers = [];
+  if (Number(price) === 5) {
+    // 16 open seats scattered across all 10 rows (44 booked)
+    // Winner seats 5 and 12 remain booked
+    openSeatNumbers = [3, 7, 11, 14, 19, 23, 26, 31, 35, 38, 42, 45, 49, 52, 56, 59];
+  } else if (Number(price) === 1) {
+    // 12 open seats scattered across 60 seats (48 booked)
+    // Winner seats 4 and 18 remain booked
+    openSeatNumbers = [6, 10, 15, 21, 27, 33, 39, 44, 48, 51, 55, 60];
+  } else {
+    // 18 open seats
+    openSeatNumbers = [2, 6, 9, 13, 17, 21, 25, 28, 32, 36, 40, 43, 47, 50, 53, 57, 58, 60];
+  }
+
+  const openSet = new Set(openSeatNumbers);
+  const bookedSeatNumbers = [];
+  for (let s = 1; s <= 60; s++) {
+    if (!openSet.has(s)) {
+      bookedSeatNumbers.push(s);
+    }
+  }
+
   const tkts = [];
-  for (let i = 1; i <= count; i++) {
-    const isWon = (i === 5 || i === 12);
+  const wonSeats = (Number(price) === 5) ? [5, 12] : [4, 18];
+
+  bookedSeatNumbers.forEach((seatNum, idx) => {
+    const isWon = wonSeats.includes(seatNum);
     tkts.push({
-      id: `tkt_${price}_${i}`,
+      id: `tkt_${price}_${seatNum}`,
       pool_id: poolId,
-      user_id: `demo_user_${price}_${i}`,
-      ticket_number: i,
-      name: DUMMY_NAMES[(i - 1) % DUMMY_NAMES.length] || `Player #${i}`,
+      user_id: `demo_user_${price}_${seatNum}`,
+      ticket_number: seatNum,
+      name: DUMMY_NAMES[idx % DUMMY_NAMES.length] || `Player #${seatNum}`,
       status: isWon ? "WON" : "ACTIVE",
       won_round: isWon ? 1 : null,
       prize_info: isWon ? `${price * 25} USDT Cash` : null
     });
-  }
+  });
+
   return tkts;
 }
 
@@ -109,7 +135,7 @@ const State = {
   poolViewTab: 'available', // 'available' | 'ongoing'
   ongoingFilter: 'ALL', // 'ALL' | 'ACTIVE' | 'WON'
   currentPool: DUMMY_POOLS[1],
-  poolTickets: generateFallbackTickets("pool_5", 5, 45),
+  poolTickets: generateFallbackTickets("pool_5", 5, 44),
   poolRounds: DUMMY_ROUNDS,
   myTickets: [],
   walletHistory: [],
@@ -118,6 +144,29 @@ const State = {
   language: 'en',
   isSpeaking: false,
   theme: 'light',
+  selectedBookingSeats: [14],
+  selectedBookingPoolId: "pool_5",
+
+  setSelectedBookingSeats(seats) {
+    this.selectedBookingSeats = Array.isArray(seats) ? seats : [seats];
+    this.notify();
+  },
+
+  addBookingSeat(seatNum) {
+    const num = Number(seatNum);
+    if (!this.selectedBookingSeats.includes(num)) {
+      this.selectedBookingSeats.push(num);
+      this.notify();
+    }
+  },
+
+  removeBookingSeat(seatNum) {
+    const num = Number(seatNum);
+    if (this.selectedBookingSeats.length > 1) {
+      this.selectedBookingSeats = this.selectedBookingSeats.filter(s => s !== num);
+      this.notify();
+    }
+  },
 
   setProfileSubTab(subTab) {
     this.profileSubTab = subTab;
@@ -141,7 +190,7 @@ const State = {
       const match = this.allPools.find(p => Number(p.ticket_price) === num);
       if (match) {
         this.currentPool = match;
-        this.poolTickets = generateFallbackTickets(match.id, num, num === 1 ? 50 : 45);
+        this.poolTickets = generateFallbackTickets(match.id, num, num === 1 ? 48 : 44);
       }
     }
     this.notify();
